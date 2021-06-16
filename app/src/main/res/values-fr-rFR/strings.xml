@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TimeUtils</string>
+    <string name="tag_clock">Horloge</string>
+    <string name="tag_chrono">Chronomètre</string>
+    <string name="tag_timer">Minuteur</string>
+    <string name="tag_alarms">Alarmes\n\nNon\nImplémenté</string>
+    <string name="back_to_home">Retour au Menu Principal</string>
+    <string name="timer_done">Temps écoulé !</string>
+    <string name="chrono_start">Lancer</string>
+    <string name="chrono_lap">Tour</string>
+    <string name="chrono_reset">Réinitialiser</string>
+    <string name="chrono_pause">Pause</string>
+</resources>

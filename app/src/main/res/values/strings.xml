@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">TimeUtils</string>
+    <string name="tag_clock">Clock</string>
+    <string name="tag_chrono">Stopwatch</string>
+    <string name="tag_timer">Timer</string>
+    <string name="tag_alarms">Alarms\n\nNot\nImplemented</string>
+    <string name="back_to_home">Back to Home</string>
+    <string name="timer_done">Timer Ended!</string>
+    <string name="chrono_start">Start</string>
+    <string name="chrono_lap">Lap</string>
+    <string name="chrono_reset">Reset</string>
+    <string name="chrono_pause">Pause</string>
+</resources>
