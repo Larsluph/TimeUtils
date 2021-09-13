@@ -11,4 +11,6 @@
     <string name="chrono_lap">Tour</string>
     <string name="chrono_reset">Réinitialiser</string>
     <string name="chrono_pause">Pause</string>
+    <string name="chrono_stop">Stop</string>
+    <string name="chrono_resume">Reprendre</string>
 </resources>

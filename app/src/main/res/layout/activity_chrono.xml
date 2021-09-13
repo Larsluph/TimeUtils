@@ -34,6 +34,18 @@
         tools:ignore="HardcodedText" />
 
     <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chrono_start"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/chrono_exit_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayChrono"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <Button
         android:id="@+id/lap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,30 +59,20 @@
         app:layout_constraintVertical_bias="0.6" />
 
     <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chrono_start"
-        app:layout_constraintBottom_toTopOf="@+id/chrono_exit_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/displayChrono"
-        app:layout_constraintVertical_bias="0.6" />
-
-    <Button
-        android:id="@+id/pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chrono_pause"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/chrono_exit_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/displayChrono"
-        app:layout_constraintVertical_bias="0.6" />
-
-    <Button
         android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chrono_stop"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/chrono_exit_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/start"
+        app:layout_constraintTop_toBottomOf="@+id/displayChrono"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <Button
+        android:id="@+id/reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/chrono_reset"

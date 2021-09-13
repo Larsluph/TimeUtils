@@ -1,6 +1,5 @@
 package com.larsluph.timeutils.chrono;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,15 +10,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.larsluph.timeutils.R;
 
+import java.util.Locale;
+
 public class ChronoActivity extends AppCompatActivity {
 
-    Button start, lap, pause, reset;
-    ScrollView scrollView;
-    TextView displayChrono, displayLap;
-    Chronometer chronometer;
-    Thread chronoThread;
-    String lapViewContent = "";
-    int lapCount = 0;
+    enum ChronoStatus {
+        not_started,
+        started,
+        stopped
+    }
+
+    private Button start, lap, stop, reset;
+    private ScrollView scrollView;
+    private TextView displayChrono, displayLap;
+    private Chronometer chronometer;
+    private Thread chronoThread;
+    private int lapCount = 0;
+    private Time lastLap = Time.empty();
+    private long lastStop = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,127 +36,102 @@ public class ChronoActivity extends AppCompatActivity {
 
         start = findViewById(R.id.start);
         lap = findViewById(R.id.lap);
-        pause = findViewById(R.id.pause);
-        reset = findViewById(R.id.stop);
+        stop = findViewById(R.id.stop);
+        reset = findViewById(R.id.reset);
         displayChrono = findViewById(R.id.displayChrono);
         displayLap = findViewById(R.id.displayLap);
         scrollView = findViewById(R.id.scroll_lap);
 
-        final Button buttonExit = findViewById(R.id.chrono_exit_button);
-        buttonExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.chrono_exit_button).setOnClickListener(v -> finish());
 
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startChrono();
-            }
-        });
+        start.setOnClickListener(v -> startChrono());
+        lap.setOnClickListener(v -> saveLap());
+        stop.setOnClickListener(v -> stopChrono());
+        reset.setOnClickListener(v -> resetChrono());
 
-        lap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveLap();
-            }
-        });
-
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pauseChrono();
-            }
-        });
-
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetChrono();
-            }
-        });
+        toggleButtonVisibility(ChronoStatus.not_started);
     }
 
-    private void toggleButtonVisibility(boolean isStart) {
-        if (isStart) {
-            start.setVisibility(View.VISIBLE);
-            lap.setVisibility(View.INVISIBLE);
-            // pause.setVisibility(View.INVISIBLE);
-            reset.setVisibility(View.INVISIBLE);
-        } else {
-            start.setVisibility(View.INVISIBLE);
-            lap.setVisibility(View.VISIBLE);
-            // pause.setVisibility(View.VISIBLE);
-            reset.setVisibility(View.VISIBLE);
+    private void toggleButtonVisibility(ChronoStatus status) {
+        switch (status) {
+            case not_started:
+                start.setVisibility(View.VISIBLE);
+                start.setText(R.string.chrono_start);
+                lap.setVisibility(View.INVISIBLE);
+                stop.setVisibility(View.INVISIBLE);
+                reset.setVisibility(View.INVISIBLE);
+                break;
+            case started:
+                start.setVisibility(View.INVISIBLE);
+                lap.setVisibility(View.VISIBLE);
+                stop.setVisibility(View.VISIBLE);
+                reset.setVisibility(View.INVISIBLE);
+                break;
+            case stopped:
+                start.setVisibility(View.VISIBLE);
+                start.setText(R.string.chrono_resume);
+                lap.setVisibility(View.VISIBLE);
+                stop.setVisibility(View.INVISIBLE);
+                reset.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
-    public void updateChronoView(final int h, final int m, final int s, final int millis) {
-        runOnUiThread(new Runnable() {
-            @SuppressLint("DefaultLocale")
-            @Override
-            public void run() {
-                String data;
-                if (h == 0) {
-                    if (m == 0) {
-                        data = String.format("%02d.%03d", s, millis);
-                    } else {
-                        data = String.format("%02d:%02d.%03d", m, s, millis);
-                    }
-                } else {
-                    data = String.format("%02d:%02d:%02d.%03d", h, m, s, millis);
-                }
-
-                displayChrono.setText(data);
-            }
-        });
+    public void updateChronoView(Time time) {
+        runOnUiThread(() -> displayChrono.setText(time.toString()));
     }
 
-    public void updateLapView() {
-        displayLap.setText(lapViewContent);
+    public void updateLapView(String data) {
+        CharSequence text = displayLap.getText();
+        if (lapCount != 0) { text += "\n"; } // add newline if not the first lap
+        text += data;
+        displayLap.setText(text);
+    }
+
+    public void resetLapView() {
+        lapCount = 0;
+        displayLap.setText("");
     }
 
     private void startChrono() {
-        toggleButtonVisibility(false);
-        lapCount = 0;
-        lapViewContent = "";
-        updateLapView();
-        chronometer = new Chronometer(this);
+        if (chronometer != null) return;
+        toggleButtonVisibility(ChronoStatus.started);
+
+        if (lastStop == 0) chronometer = new Chronometer(this);
+        else chronometer = new Chronometer(this, lastStop);
+
         chronoThread = new Thread(chronometer);
-        chronoThread.start();
         chronometer.start();
+        chronoThread.start();
     }
 
-    private void pauseChrono() {
+    private void stopChrono() {
+        if (chronometer == null) return;
 
+        chronometer.stop();
+        toggleButtonVisibility(ChronoStatus.stopped);
+        lastStop = chronometer.stopTime.toLong();
+
+        chronometer = null;
+        chronoThread = null;
     }
 
     private void resetChrono() {
-        toggleButtonVisibility(true);
-
-        if (chronometer != null) {
-            chronometer.stop();
-            chronoThread.interrupt();
-            chronoThread = null;
-            chronometer = null;
-        }
+        updateChronoView(Time.empty());
+        toggleButtonVisibility(ChronoStatus.not_started);
+        lastStop = 0;
+        resetLapView();
     }
 
     private void saveLap() {
-        if (chronometer != null) {
-            // update lap display
-            if (lapCount != 0) { lapViewContent += "\n";} // add newline if not the first lap
-            lapViewContent += String.format("LAP %s: %s", ++lapCount, displayChrono.getText());
-            updateLapView();
-            // scroll to bottom
-            scrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    scrollView.smoothScrollTo(0, displayLap.getBottom());
-                }
-            });
-        }
+        if (chronometer == null) return;
+
+        // update lap display
+        Time currentChrono = chronometer.getElapsedTime();
+        Time elapsed = currentChrono.sub(lastLap);
+        updateLapView(String.format(Locale.getDefault(), "LAP %s: %s (+%s)", ++lapCount, currentChrono, elapsed));
+        // scroll to bottom
+        scrollView.post(() -> scrollView.smoothScrollTo(0, displayLap.getBottom()));
+        lastLap = currentChrono;
     }
 }

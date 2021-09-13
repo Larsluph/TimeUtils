@@ -135,7 +135,7 @@ public class TimerActivity extends AppCompatActivity {
 
     private void startTimer() {
         int seconds = getTimeData();
-        timer = new CountDownTimer(seconds*1000, 1000) {
+        timer = new CountDownTimer(seconds*1000L, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 int total = (int) millisUntilFinished / 1000 + 1;

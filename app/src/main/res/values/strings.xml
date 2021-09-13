@@ -7,7 +7,9 @@
     <string name="back_to_home">Back to Home</string>
     <string name="timer_done">Timer Ended!</string>
     <string name="chrono_start">Start</string>
+    <string name="chrono_resume">Resume</string>
     <string name="chrono_lap">Lap</string>
+    <string name="chrono_stop">Stop</string>
     <string name="chrono_reset">Reset</string>
     <string name="chrono_pause">Pause</string>
 </resources>
