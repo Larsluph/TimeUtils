@@ -11,4 +11,6 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="alarmRingBg">#020945</color>
+
+    <color name="calc_error">#D50000</color>
 </resources>

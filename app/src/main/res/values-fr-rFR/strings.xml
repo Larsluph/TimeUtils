@@ -13,4 +13,14 @@
     <string name="chrono_pause">Pause</string>
     <string name="chrono_stop">Stop</string>
     <string name="chrono_resume">Reprendre</string>
+    <string name="local_service_started">Service démarré</string>
+    <string name="local_service_stopped">Service arrêté</string>
+    <string name="local_service_label">Nom du service</string>
+    <string name="titleCalc">Date Initiale</string>
+    <string name="subCalc">Delta</string>
+    <string name="labelTime">Heure :</string>
+    <string name="labelDate">Date :</string>
+    <string name="labelCalcButton">Calculer</string>
+    <string name="tag_calc">Calculatrice</string>
+    <string name="calc_error">Entrée Invalide</string>
 </resources>

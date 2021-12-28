@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.larsluph.timeutils.calc.CalcActivity;
 import com.larsluph.timeutils.chrono.ChronoActivity;
 import com.larsluph.timeutils.clock.ClockActivity;
 import com.larsluph.timeutils.timer.TimerActivity;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 //        final Button alarms = findViewById(R.id.button_alarms);
         final Button chrono = findViewById(R.id.button_chrono);
         final Button timer = findViewById(R.id.button_timer);
+        final Button calc = findViewById(R.id.button_calc);
 
         clock.setOnClickListener(v -> {
             // Clock button handler
@@ -40,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         timer.setOnClickListener(v -> {
             // Timer button handler
             Intent intent = new Intent(MainActivity.this, TimerActivity.class);
+            startActivity(intent);
+        });
+        calc.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CalcActivity.class);
             startActivity(intent);
         });
     }

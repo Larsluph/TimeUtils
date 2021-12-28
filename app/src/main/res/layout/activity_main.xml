@@ -16,18 +16,17 @@
         android:text="@string/tag_clock"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/button_chrono"
-        app:layout_constraintEnd_toStartOf="@+id/button_alarms"
+        app:layout_constraintEnd_toStartOf="@+id/button_calc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_alarms"
+        android:id="@+id/button_calc"
         style="@style/ColoredButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:enabled="false"
         android:gravity="center"
-        android:text="@string/tag_alarms"
+        android:text="@string/tag_calc"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/button_timer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +58,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_chrono"
-        app:layout_constraintTop_toBottomOf="@+id/button_alarms" />
+        app:layout_constraintTop_toBottomOf="@+id/button_calc" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

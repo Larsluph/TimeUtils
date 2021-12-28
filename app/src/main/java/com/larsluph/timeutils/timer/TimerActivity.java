@@ -172,6 +172,6 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private int getTimeData() {
-        return hoursPicker.getValue()*360 + minutesPicker.getValue()*60 + secondsPicker.getValue();
+        return hoursPicker.getValue()*3600 + minutesPicker.getValue()*60 + secondsPicker.getValue();
     }
 }
