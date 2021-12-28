@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +38,7 @@ public class CalcActivity extends AppCompatActivity {
 
     private void calcResult() {
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(findViewById(R.id.deltaDateTime).getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.hideSoftInputFromWindow(findViewById(R.id.deltaDateTime).getWindowToken(), 0);
 
         // fetch fields from layout
         final EditText textDate = findViewById(R.id.baseDate);
@@ -47,6 +47,7 @@ public class CalcActivity extends AppCompatActivity {
         final TextView result = findViewById(R.id.calcResult);
 
         boolean dispDate = true;
+        boolean dispYear = false;
         boolean dispTime = true;
         boolean dispSeconds = false;
 
@@ -56,9 +57,22 @@ public class CalcActivity extends AppCompatActivity {
 
         // base date detection
         try {
-            baseDate = LocalDate.parse(textDate.getText().toString(),
-                    DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        } catch (DateTimeParseException ignored) {
+            String[] matchs = textDate.getText().toString()
+                                                .replace("/", "-")
+                                                .split("-");
+            switch (matchs.length) {
+                case 3:
+                    baseDate = baseDate.withYear(Integer.parseInt(matchs[2]));
+                    dispYear = true;
+                case 2:
+                    baseDate = baseDate.withMonth(Integer.parseInt(matchs[1]))
+                                       .withDayOfMonth(Integer.parseInt(matchs[0]));
+                    break;
+                default:
+                    throw new NumberFormatException("Invalid Date Format");
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             Log.d("date parsing", "invalid date");
             dispDate = false;
         }
@@ -75,11 +89,11 @@ public class CalcActivity extends AppCompatActivity {
                                        .withMinute(Integer.parseInt(matchs[1]));
                     break;
                 default:
-                    throw new NumberFormatException("Invalid Format");
+                    throw new NumberFormatException("Invalid Time Format");
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            Log.d("time parsing", "Can't parse time");
+            Log.d("time parsing", "invalid time");
             dispTime = false;
         }
 
@@ -99,35 +113,20 @@ public class CalcActivity extends AppCompatActivity {
         int days = 0, hours = 0, minutes = 0, seconds = 0;
 
         // match days
-        if (mDays.find()) {
-            String temp = mDays.group(1);
-            if (temp != null) {
-                days = Integer.parseInt(temp);
-            }
+        while (mDays.find()) {
+            days += Integer.parseInt(Objects.requireNonNull(mDays.group(1)));
         }
-
         // match hours
-        if (mHours.find()) {
-            String temp = mHours.group(1);
-            if (temp != null) {
-                hours = Integer.parseInt(temp);
-            }
+        while (mHours.find()) {
+            hours += Integer.parseInt(Objects.requireNonNull(mHours.group(1)));
         }
-
         // match minutes
-        if (mMinutes.find()) {
-            String temp = mMinutes.group(1);
-            if (temp != null) {
-                minutes = Integer.parseInt(temp);
-            }
+        while (mMinutes.find()) {
+            minutes += Integer.parseInt(Objects.requireNonNull(mMinutes.group(1)));
         }
-
         // match seconds
-        if (mSeconds.find()) {
-            String temp = mSeconds.group(1);
-            if (temp != null) {
-                seconds = Integer.parseInt(temp);
-            }
+        while (mSeconds.find()) {
+            seconds += Integer.parseInt(Objects.requireNonNull(mSeconds.group(1)));
         }
 
         // compute final dt
@@ -138,18 +137,19 @@ public class CalcActivity extends AppCompatActivity {
 
         // render with correct format
         result.setTextColor(getResources().getColor(android.R.color.tab_indicator_text, null));
-        if (dispDate && dispTime)
-            result.setText(finalDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-        else if (dispDate)
-            result.setText(finalDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        else if (dispTime)
-            if (dispSeconds)
-                result.setText(finalDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-            else
-                result.setText(finalDateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
-        else {
+        String pattern = "";
+        if (dispDate) {
+            pattern += "dd/MM";
+            if (dispYear) pattern += "/yyyy";
+        }
+        if (dispTime) {
+            pattern += " HH:mm";
+            if (dispSeconds) pattern += ":ss";
+        }
+        if (pattern.isEmpty()) {
             result.setText(R.string.calc_error);
             result.setTextColor(getColor(R.color.calc_error));
-        }
+        } else
+            result.setText(finalDateTime.format(DateTimeFormatter.ofPattern(pattern.trim())));
     }
 }
