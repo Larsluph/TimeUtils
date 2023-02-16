@@ -66,6 +66,7 @@ public class CalcActivity extends AppCompatActivity {
         textDelta = findViewById(R.id.deltaDateTime);
         result = findViewById(R.id.calcResult);
 
+        // When "Enter" key is pressed on deltaDateTime
         textDelta.setOnEditorActionListener((v, id, e) -> {
             calcResult();
             return true;
@@ -109,7 +110,6 @@ public class CalcActivity extends AppCompatActivity {
         if (input.isEmpty()) {
             // no input, return current date
             dispDate = false;
-            return date;
         } else if (validateDate(input)) {
             // input is valid date
             String[] matchs = input.replace("/", "-").split("-");
@@ -218,20 +218,20 @@ public class CalcActivity extends AppCompatActivity {
      */
     private void renderResult(LocalDateTime finalDateTime) {
         result.setTextColor(getResources().getColor(android.R.color.tab_indicator_text, null));
-        String pattern = "";
+        StringBuilder pattern = new StringBuilder();
         if (dispDate) {
-            pattern += "dd/MM";
-            if (dispYear) pattern += "/yyyy";
+            pattern.append("dd/MM");
+            if (dispYear) pattern.append("/yyyy");
         }
         if (dispTime) {
-            pattern += " HH:mm";
-            if (dispSeconds) pattern += ":ss";
+            pattern.append(" HH:mm");
+            if (dispSeconds) pattern.append(":ss");
         }
-        if (pattern.isEmpty()) {
+        if (pattern.length() < 1) {
             result.setText(R.string.calc_error);
             result.setTextColor(getColor(R.color.calc_error));
         } else
-            result.setText(finalDateTime.format(DateTimeFormatter.ofPattern(pattern.trim())));
+            result.setText(finalDateTime.format(DateTimeFormatter.ofPattern(pattern.toString().trim())));
     }
 
     /**
@@ -255,8 +255,10 @@ public class CalcActivity extends AppCompatActivity {
         // combine date and time into a single variable
         LocalDateTime dateTime = LocalDateTime.of(date, time);
 
+        // delta detection
         TimeSpan delta = detectDelta(textDelta.getText().toString());
 
+        // sum delta with dateTime
         LocalDateTime finalDateTime = processDelta(dateTime, delta);
 
         // render with correct format
