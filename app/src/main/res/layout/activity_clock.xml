@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/clock_bg"
     android:orientation="vertical"
     tools:context=".clock.ClockActivity">
 
@@ -11,9 +12,10 @@
         android:id="@+id/clockWidget24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="80sp"
         android:format12Hour="HH:mm:ss"
         android:format24Hour="HH:mm:ss"
+        android:textColor="@color/clock_fg"
+        android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/clock_exit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +26,10 @@
         android:id="@+id/clockWidget12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50sp"
         android:format12Hour="hh:mm:ss a"
         android:format24Hour="hh:mm:ss a"
+        android:textColor="@color/clock_fg"
+        android:textSize="50sp"
         app:layout_constraintBottom_toTopOf="@+id/clock_exit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +40,15 @@
         android:id="@+id/clock_exit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/clock_btn_bg"
         android:text="@string/back_to_home"
+        android:textColor="@color/clock_btn_fg"
         android:textSize="24sp"
+        android:theme="@style/ColoredButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintVertical_bias="0.9"
+        style="?android:attr/borderlessButtonStyle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

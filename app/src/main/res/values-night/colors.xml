@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="clock_fg">@android:color/white</color>
+    <color name="clock_bg">@android:color/black</color>
+    <color name="clock_btn_fg">@color/clock_fg</color>
+    <color name="clock_btn_bg">@color/clock_bg</color>
+</resources>

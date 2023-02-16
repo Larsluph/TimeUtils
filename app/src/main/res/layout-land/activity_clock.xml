@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".clock.ClockActivity"
+    android:background="@color/clock_bg"
+    android:forceDarkAllowed="true"
     android:keepScreenOn="true"
-    android:forceDarkAllowed="true">
+    android:orientation="vertical"
+    tools:context=".clock.ClockActivity">
 
     <TextClock
         android:id="@+id/clockWidget24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="135sp"
         android:format12Hour="hh:mm:ss a"
         android:format24Hour="HH:mm:ss"
+        android:textColor="@color/clock_fg"
+        android:textSize="135sp"
         app:layout_constraintBottom_toTopOf="@+id/clock_exit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

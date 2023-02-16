@@ -13,4 +13,9 @@
     <color name="alarmRingBg">#020945</color>
 
     <color name="calc_error">#D50000</color>
+
+    <color name="clock_fg">@android:color/black</color>
+    <color name="clock_bg">@android:color/white</color>
+    <color name="clock_btn_fg">@color/clock_fg</color>
+    <color name="clock_btn_bg">@color/clock_bg</color>
 </resources>
