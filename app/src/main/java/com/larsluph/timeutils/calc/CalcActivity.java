@@ -39,7 +39,7 @@ public class CalcActivity extends AppCompatActivity {
      * - hh:mm
      * - hh:mm:ss
      */
-    private static final Pattern pTime = Pattern.compile("^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])(?::([0-5]?[0-9]))?$");
+    private static final Pattern pTime = Pattern.compile("^(2[0-3]|[01]?\\d):([0-5]?\\d)(?::([0-5]?\\d))?$");
 
     private static final Pattern pDays = Pattern.compile("(-?\\d+)d");
     private static final Pattern pHours = Pattern.compile("(-?\\d+)h");
@@ -141,7 +141,6 @@ public class CalcActivity extends AppCompatActivity {
         if (input.isEmpty()) {
             // no input, return current time
             dispTime = false;
-            return time;
         } else if (validateTime(input)) {
             // input is valid time
             String[] matchs = input.split(":");
@@ -217,8 +216,8 @@ public class CalcActivity extends AppCompatActivity {
      * @param finalDateTime processed delta to display
      */
     private void renderResult(LocalDateTime finalDateTime) {
-        result.setTextColor(getResources().getColor(android.R.color.tab_indicator_text, null));
         StringBuilder pattern = new StringBuilder();
+
         if (dispDate) {
             pattern.append("dd/MM");
             if (dispYear) pattern.append("/yyyy");
@@ -227,11 +226,14 @@ public class CalcActivity extends AppCompatActivity {
             pattern.append(" HH:mm");
             if (dispSeconds) pattern.append(":ss");
         }
-        if (pattern.length() < 1) {
+
+        if (pattern.length() == 0) {
             result.setText(R.string.calc_error);
             result.setTextColor(getColor(R.color.calc_error));
-        } else
+        } else {
             result.setText(finalDateTime.format(DateTimeFormatter.ofPattern(pattern.toString().trim())));
+            result.setTextColor(getResources().getColor(android.R.color.tab_indicator_text, null));
+        }
     }
 
     /**
