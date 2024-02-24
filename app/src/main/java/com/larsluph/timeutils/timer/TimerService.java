@@ -17,7 +17,7 @@ public class TimerService extends Service {
 
     // Unique Identification Number for the Notification.
     // We use it on Notification start, and to cancel it.
-    private int NOTIFICATION = R.string.local_service_started;
+    private final int NOTIFICATION = R.string.local_service_started;
 
     /**
      * Class for clients to access.  Because we know this service always
@@ -71,7 +71,7 @@ public class TimerService extends Service {
 
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, TimerActivity.class), PendingIntent.FLAG_NO_CREATE);
+                new Intent(this, TimerActivity.class), PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
 
         // Set the info for the views that show in the notification panel.
         Notification notification = new Notification.Builder(this, "Timer")

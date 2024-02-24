@@ -18,12 +18,7 @@ public class ClockActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock);
 
-        ((Button) findViewById(R.id.clock_exit_button)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ((Button) findViewById(R.id.clock_exit_button)).setOnClickListener(v -> finish());
 
         final TextClock textClock12 = findViewById(R.id.clockWidget12);
         final TextClock textClock24 = findViewById(R.id.clockWidget24);

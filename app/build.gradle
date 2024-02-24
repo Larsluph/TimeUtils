@@ -4,11 +4,11 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.larsluph.fullscreenclock"
+        applicationId "com.larsluph.timeutils"
         minSdkVersion 29
         targetSdkVersion 33
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,6 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.larsluph.timeutils'
 }
 
 dependencies {
